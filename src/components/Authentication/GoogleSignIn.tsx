@@ -13,21 +13,6 @@ const GoogleSignIn = () => {
 
   const handleGoogleLogin = async (credentialResponse: any) => {
     const toastId = toast.loading("Login Processing !");
-    try {
-      const idToken = credentialResponse.credential;
-      const response = await userGoogleLogin({ token: idToken });
-      if (response?.statusCode === 200) {
-        dispatch(setUser({ accessToken: response.data }));
-        toast.success(response?.message, { id: toastId, duration: 2000 });
-        const redirectTo = searchParams.get("redirect") || "/";
-        router.push(redirectTo);
-      } else {
-        toast.error("Login Failed", { id: toastId, duration: 1000 });
-      }
-    } catch (error) {
-      toast.error("Login failed. Please try again.");
-      console.error("Error:", error);
-    }
   };
 
   return (

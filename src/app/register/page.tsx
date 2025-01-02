@@ -2,11 +2,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { FaGoogle } from "react-icons/fa";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
-import { userRegister } from "@/components/Authentication/userRegister";
-import VerifyOtpModal from "@/components/Authentication/VerifyOtpModal";
 import GoogleSignIn from "@/components/Authentication/GoogleSignIn";
 
 interface FormData {
@@ -32,35 +29,6 @@ const RegisterPage = () => {
 
   const handleRegister: SubmitHandler<FormData> = async (data) => {
     const toastId = toast.loading("Register Processing...!");
-    try {
-      setLoginData({
-        email: data.email,
-        password: data.password,
-      });
-      const response = await userRegister(data);
-      setVerifyModalOpen(false);
-      console.log("Response", response);
-      if (
-        response?.statusCode === 201 &&
-        response?.data?.isVerified === false
-      ) {
-        toast.success(response?.message, { id: toastId, duration: 1000 });
-        setVerifyModalOpen(true);
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        toast.error(err.message, { id: toastId, duration: 1000 });
-        console.error(err.message);
-        setVerifyModalOpen(false);
-      } else {
-        setVerifyModalOpen(false);
-        toast.error("An unknown error occurred", {
-          id: toastId,
-          duration: 1000,
-        });
-        console.error(err);
-      }
-    }
   };
 
   return (
@@ -81,11 +49,6 @@ const RegisterPage = () => {
       {/* Register Form */}
       <div className="relative z-10 flex items-center justify-center min-h-screen">
         <div className="p-8 rounded-lg max-w-sm w-full backdrop-blur-md bg-white/30">
-          <VerifyOtpModal
-            isOpen={isVerifyModalOpen}
-            onClose={closeModal}
-            loginData={loginData}
-          />
           <h1 className="text-2xl font-semibold text-center mb-6 text-white">
             Create Your Account
           </h1>

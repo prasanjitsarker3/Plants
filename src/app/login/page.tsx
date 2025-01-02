@@ -19,11 +19,6 @@ type FormData = {
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const dispatch = useAppDispatch();
-
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -34,23 +29,6 @@ const LoginPage = () => {
 
   const handleEmailLogin = async (data: FormData) => {
     const toastId = toast.loading("Login Processing !");
-    try {
-      const res = await userLogin(data);
-      if (res?.statusCode === 201) {
-        dispatch(setUser({ accessToken: res.data?.accessToken }));
-        reset();
-        toast.success(res?.message, { id: toastId, duration: 2000 });
-        const redirectTo = searchParams.get("redirect") || "/";
-        router.push(redirectTo);
-        setLoading(false);
-      } else {
-        toast.error(res?.message, { id: toastId, duration: 2000 });
-        setLoading(false);
-      }
-    } catch (err: any) {
-      console.error("Error:", err?.message || "Something went wrong");
-      setLoading(false);
-    }
   };
 
   return (
@@ -131,11 +109,7 @@ const LoginPage = () => {
               type="submit"
               className="w-full py-3 bg-[#028355] text-white transition duration-300 rounded-full"
             >
-              {loading ? (
-                <Spinner className="text-white" size="sm" />
-              ) : (
-                " Login with Email"
-              )}
+              Login with Email
             </button>
           </form>
           <div className="my-4 flex items-center justify-center space-x-2">
